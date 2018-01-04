@@ -17,12 +17,12 @@ namespace xod {
 {{/each}}
 {{#unless patch.isConstant}}
 {{ ns patch }}::Node node_{{ id }} = {
-    { }, // state
-  {{#if patch.usesTimeout}}
+    {{ ns patch }}::State(), // state default
+  {{#if patch.usesTimeouts}}
     0, // timeoutAt
   {{/if}}
   {{#each outputs}}
-    node_{{ ../id }}_output_{{ pinKey }},
+    node_{{ ../id }}_output_{{ pinKey }}, // output {{ pinKey }} default
   {{/each}}
   {{#eachDirtyable outputs}}
     {{ isDirtyOnBoot }}, // {{ pinKey }} dirty
