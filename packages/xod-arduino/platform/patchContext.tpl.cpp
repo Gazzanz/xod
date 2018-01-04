@@ -74,6 +74,7 @@ template<typename InputT> bool isInputDirty(Context ctx) {
     static_assert(always_false<InputT>::value,
             "Invalid input descriptor. Expected one of:" \
             "{{#eachDirtyable inputs}} input_{{pinKey}}{{/eachDirtyable}}");
+    return false;
 }
 
 {{#eachDirtyable inputs}}
@@ -91,9 +92,9 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 {{#each outputs}}
 template<> void emitValue<output_{{ pinKey }}>(Context ctx, {{ cppType type }} val) {
     ctx->_node->output_{{ pinKey }} = val;
-  {{#if isDirtyable ~}}
+  {{#if isDirtyable}}
     ctx->_node->isOutputDirty_{{ pinKey }} = true;
-  {{~/if}}
+  {{/if}}
 }
 {{/each}}
 

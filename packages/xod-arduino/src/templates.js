@@ -225,12 +225,13 @@ export const renderImplList = def(
     trimTrailingWhitespace,
     templates.implList,
     R.map(
-      R.applySpec({
-        owner: R.prop('owner'),
-        libName: R.prop('libName'),
-        patchName: R.prop('patchName'),
-        implementation: renderImpl,
-      })
+      // TODO: extract to XF.extendSpec
+      R.converge(R.merge, [
+        R.identity,
+        R.applySpec({
+          implementation: renderImpl
+        }),
+      ])
     )
   )
 );
