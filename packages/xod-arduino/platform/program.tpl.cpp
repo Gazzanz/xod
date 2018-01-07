@@ -79,6 +79,9 @@ void runTransaction(bool firstRun) {
   {{#eachNonConstantNode}}
     { // {{ ns patch }} #{{ id }}
         if (node_{{ id }}.isNodeDirty) {
+            XOD_TRACE_F("Eval node #");
+            XOD_TRACE_LN({{ id }});
+
             {{ns patch }}::ContextObject ctxObj;
             ctxObj._node = &node_{{ id }};
 
