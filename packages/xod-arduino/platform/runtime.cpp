@@ -151,21 +151,19 @@ TimeMs transactionTime();
 
 namespace detail {
 
-// Marks timed out node dirty. Do not reset timeoutAt here to give
-// a chance for a node to get a reasonable result from `isTimedOut`
-// later during its `evaluate`
-template<typename NodeT>
-void checkTriggerTimeout(NodeT* node, TimeMs now) {
-    TimeMs t = node->timeoutAt;
-    // TODO: deal with uint32 overflow
-    node->isNodeDirty |= (t && t < now);
-}
-
 template<typename NodeT>
 bool isTimedOut(const NodeT* node) {
     TimeMs t = node->timeoutAt;
     // TODO: deal with uint32 overflow
     return t && t < transactionTime();
+}
+
+// Marks timed out node dirty. Do not reset timeoutAt here to give
+// a chance for a node to get a reasonable result from `isTimedOut`
+// later during its `evaluate`
+template<typename NodeT>
+void checkTriggerTimeout(NodeT* node) {
+    node->isNodeDirty |= isTimedOut(node);
 }
 
 template<typename NodeT>

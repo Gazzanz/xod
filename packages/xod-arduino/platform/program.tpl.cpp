@@ -32,18 +32,16 @@ namespace xod {
 {{/unless}}
 {{/each}}
 
-void idle() {
-    TimeMs now = millis();
-    {{#eachNodeUsingTimeouts}}
-    detail::checkTriggerTimeout(&node_{{ id }}, now);
-    {{/eachNodeUsingTimeouts}}
-}
-
 void runTransaction(bool firstRun) {
     g_transactionTime = millis();
 
     XOD_TRACE_F("Transaction started, t=");
     XOD_TRACE_LN(g_transactionTime);
+
+    // Check for timeouts
+  {{#eachNodeUsingTimeouts}}
+    detail::checkTriggerTimeout(&node_{{ id }});
+  {{/eachNodeUsingTimeouts}}
 
     // defer-* nodes are always at the very bottom of the graph,
     // so no one will recieve values emitted by them.
@@ -174,6 +172,5 @@ void setup() {
 }
 
 void loop() {
-    xod::idle();
     xod::runTransaction(false);
 }
