@@ -98,6 +98,16 @@ void runTransaction(bool firstRun) {
                 output_{{ fromPinKey }};
           {{/eachLinkedInput}}
 
+          {{#eachNonlinkedInput}}
+            {{!--
+              // Nonlinked pulse inputs are never dirty, all value types
+              // are linked (to extracted constant nodes) and so will be
+              // processed in another loop.
+            --}}
+            {{#if isDirtyable}}
+            ctxObj._isInputDirty_{{ pinKey }} = false;
+            {{/if}}
+          {{/eachNonlinkedInput}}
           {{#eachLinkedInput}}
             {{!--
               // Constants do not store dirtieness. They are never dirty
@@ -107,8 +117,11 @@ void runTransaction(bool firstRun) {
               // pin is not dirtyable
             --}}
             {{#if isDirtyable}}
-            ctxObj._isInputDirty_{{ pinKey }} = {{#if patch.isConstant ~}}
-                firstRun{{else}}node_{{ nodeId }}.isOutputDirty_{{ fromPinKey }}{{/if}};
+            {{#if patch.isConstant}}
+            ctxObj._isInputDirty_{{ pinKey }} = firstRun;
+            {{else}}
+            ctxObj._isInputDirty_{{ pinKey }} = node_{{ nodeId }}.isOutputDirty_{{ fromPinKey }};
+            {{/if}}
             {{/if}}
           {{/eachLinkedInput}}
 

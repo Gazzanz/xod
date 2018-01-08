@@ -166,6 +166,14 @@ Handlebars.registerHelper('eachLinkedInput', function eachLinkedInput(options) {
   )(this.inputs);
 });
 
+Handlebars.registerHelper('eachNonlinkedInput', function eachNonlinkedInput(options) {
+  return R.compose(
+    R.join(''),
+    R.map(node => options.fn(node)),
+    R.reject(R.has('nodeId'))
+  )(this.inputs);
+});
+
 Handlebars.registerHelper('eachDirtyable', (pins, block) =>
   R.compose(
     R.join(''),
