@@ -33,7 +33,7 @@ What’s next
 -----------
 
 Once you start XOD IDE, you’ll see the `welcome-to-xod` project open. It’s a
-tutorial project split on many small lessons. Follow instuctions in its
+tutorial project split on many small lessons. Follow instructions in its
 comments to learn XOD. There is a [web version of the tutorial](../01-hello/)
 if you just want to get shallow understanding.
 
